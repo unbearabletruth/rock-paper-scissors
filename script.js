@@ -1,7 +1,16 @@
 computer_win_count = 0;
 human_win_count = 0;
 
+const rock_button = document.getElementById("Rck"); 
+const paper_button = document.getElementById("Ppr");
+const scissors_button = document.getElementById("Scr");
+const restart_button = document.getElementById("restart");
 
+const stat = document.getElementById("status");
+const winner = document.getElementById("winner");
+const cscore = document.getElementById("cscore");
+const uscore = document.getElementById("uscore");
+const result = document.getElementById("result");
 
 function getComputerChoice(){
     var things = ['Rock', 'Paper', 'Scissors'];
@@ -23,37 +32,42 @@ function play_round(playerSelection, computerSelection){
     }  
 }
 
-function game(which){
-    const your_choice = which;
-    let winner = play_round(your_choice.toLowerCase(), getComputerChoice().toLowerCase());
-    if (winner === 1){
-        human_win_count++;
-        const uscore = document.getElementById("uscore");
-        uscore.textContent = human_win_count;
-        console.log(`You win! Computer:${computer_win_count} vs Human:${human_win_count}`)
-    } else if (winner === 0){
-        computer_win_count++;
-        const cscore = document.getElementById("cscore");
-        cscore.textContent = computer_win_count;
-        console.log(`Computer wins! Computer:${computer_win_count} vs Human:${human_win_count}`)
-    } else {
-        console.log("Draw! Nobody wins!")
-    }
-    if (computer_win_count === 5){
-        const winner = document.getElementById("winner");
-        winner.textContent = `Computer wins! Computer:${computer_win_count} vs Human:${human_win_count}`
-    } else if (human_win_count === 5){
-        const winner = document.getElementById("winner");
-        winner.textContent = `You win! Computer:${computer_win_count} vs Human:${human_win_count}`
-    }
+function restart(){
+    computer_win_count = 0;
+    human_win_count = 0;
+    result.textContent = "";
+    winner.textContent = "";
+    uscore.textContent = 0;
+    cscore.textContent = 0;
+    stat.textContent = "Let's play again! Till 5 points!"
 }
 
-  const rock_button = document.getElementById("Rck");
-  rock_button.addEventListener('click', () => game(rock_button.textContent));
-  
-  const paper_button = document.getElementById("Ppr");
-  paper_button.addEventListener('click', () => game(paper_button.textContent));
+function game(which){
+    const your_choice = which;
+    let round = play_round(your_choice.toLowerCase(), getComputerChoice().toLowerCase());
+    if (round === 1){
+        human_win_count++;
+        uscore.textContent = human_win_count;
+        result.textContent = `You win! Computer:${computer_win_count} vs Human:${human_win_count}`
+    } else if (round === 0){
+        computer_win_count++;
+        cscore.textContent = computer_win_count;
+        result.textContent = `Computer wins! Computer:${computer_win_count} vs Human:${human_win_count}`
+    } else {
+        result.textContent = "Draw! Nobody wins!"
+    }
+    if (computer_win_count === 5 || human_win_count === 5){
+        stat.innerText = "We have a winner!"
+        if (computer_win_count === 5){
+            winner.textContent = `Computer wins! Computer:${computer_win_count} vs Human:${human_win_count}`
+        } else if (human_win_count === 5){
+            winner.textContent = `You win! Computer:${computer_win_count} vs Human:${human_win_count}`
+    }
+    restart_button.addEventListener('click', restart);
+}
+}
 
-  const scissors_button = document.getElementById("Scr");
+  rock_button.addEventListener('click', () => game(rock_button.textContent));
+  paper_button.addEventListener('click', () => game(paper_button.textContent));
   scissors_button.addEventListener('click', () => game(scissors_button.textContent));
  
